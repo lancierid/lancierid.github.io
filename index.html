@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Midori • Kits de plantas al instante</title>
+  <meta name="description" content="Kits de plantas pre-diseñados. Elegí un tema, ingresá dimensiones y programá la instalación.">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="topbar">
+    <div class="container">
+      <div class="promo">¡Temporada de plantación! <strong>25% OFF</strong> hasta fin de octubre. Código <b>PLANTING25</b></div>
+      <div class="meta-links">
+        <a href="#">Vouchers</a>
+        <a href="#">FAQ</a>
+        <a href="#">Blog</a>
+      </div>
+    </div>
+  </div>
+
+  <header class="header container">
+    <a class="brand" href="#top" aria-label="Midori">
+      <!-- Reemplazá este logo por el tuyo en /assets/logo.svg -->
+      <img src="assets/logo.svg" alt="Midori" width="200" height="200">
+      <!--span class="brand-name">Midori</span-->
+    </a>
+    <nav>
+      <a href="#instant">Kits al instante</a>
+      <a href="#kits">Colecciones</a>
+      <a href="#proyectos">A medida</a>
+      <a href="#temas">Temas</a>
+      <a href="#empresas">Empresas</a>
+      <a href="#about">Nosotros</a>
+      <a href="#contacto">Contacto</a>
+      <a href="#" class="login">Ingresar</a>
+      <a href="#" class="basket">Carrito (0)</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero container">
+      <div class="hero-copy">
+        <br>
+		<h1>Tu jardín soñado, sin complicaciones</h1>
+        <br>
+		<br>
+		<p>En Midori te ayudamos a transformar tu casa en un espacio verde y vivo. Nuestros kits prediseñados incluyen plantas seleccionadas, macetas, sustratos y una guía simple de instalación, todo entregado en tu puerta. Solo elegís el estilo (huerta, selvático, nativas o mediterráneo) y nosotros nos encargamos del resto.</p>
+		<p>Diseños pensados para que disfrutes de un rincón natural con identidad propia, <strong>fácil de armar, con dieño y sustentable</strong>.</p>
+        <div class="cta">
+          <a class="btn btn-primary" href="#instant">Empezar</a>
+        </div>
+      </div>
+      <figure class="hero-img">
+        <img src="assets/hero.jpeg" alt="Kit de plantas" />
+      </figure>
+    </section>
+
+    <section class="container whatyouget">
+      <h2>Qué recibís</h2>
+      <div class="why-grid">
+        <article class="why">
+          <img src="assets/kit1.jpg" alt="Plantas etiquetadas">
+          <h3>Plantas etiquetadas</h3>
+          <p>Perennes y arbustivas listas para plantar.</p>
+        </article>
+        <article class="why">
+          <img src="assets/plan.jpg" alt="Plan personalizado">
+          <h3>Plan personalizado</h3>
+          <p>Guía de disposición e instrucciones de plantación.</p>
+        </article>
+        <article class="why">
+          <img src="assets/membership.png" alt="Membresía Midori">
+          <h3>Membresía Midori</h3>
+          <p>Consejos y recordatorios de cuidado según tu jardín.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="instant" class="container wizard">
+      <h2>¿Listo? Empecemos</h2>
+      <p>Necesitás el <strong>largo</strong> y <strong>ancho</strong> (en cm) de tu cantero para elegir el plan correcto.</p>
+
+      <div class="wizard-steps">
+        <!-- Paso 0: Tipo de kit -->
+		<section class="step open" data-step="0">
+		  <header class="step-head"><span class="num">0</span><h3>Elegí el tipo de kit</h3></header>
+		  <div class="theme-grid type-grid">
+			<article class="theme-card">
+			  <img src="assets/tipo-canteros.jpg" alt="Canteros">
+			  <div class="theme-meta">
+				<h4>Canteros</h4>
+				<p>Para canteros a nivel de suelo o elevados.</p>
+				<button class="btn choose-type" data-type="canteros">Elegir</button>
+			  </div>
+			</article>
+			<article class="theme-card">
+			  <img src="assets/tipo-macetas.jpg" alt="Macetas">
+			  <div class="theme-meta">
+				<h4>Macetas</h4>
+				<p>Kits armados para maceteros y jardineras.</p>
+				<button class="btn choose-type" data-type="macetas">Elegir</button>
+			  </div>
+			</article>
+		  </div>
+		</section>
+		<!-- Paso 1: Tema (visible por defecto) -->
+        <section class="step open" data-step="1">
+          <header class="step-head"><span class="num">1</span><h3>Elegí tu tema</h3></header>
+          <p>Elegí el estilo de plantación que más te guste (no incluye contenedor).</p>
+          <div class="theme-grid  type-grid">
+            <article class="theme-card">
+              <img src="assets/theme-huerta.jpg" alt="Huerta">
+              <div class="theme-meta">
+                <h4>Huerta</h4>
+				<p>Aromáticas y comestibles de fácil cuidado.</p>
+				<button class="btn choose" data-theme="huerta">Elegir</button>
+              </div>
+            </article>
+            <article class="theme-card">
+              <img src="assets/theme-selvatico.jpg" alt="Selvático">
+              <div class="theme-meta">
+                <h4>Selvático</h4>
+					<p>Verde denso, texturas y sensación tropical.</p>
+					<button class="btn choose" data-theme="selvatico">Elegir</button>
+              </div>
+            </article>
+            <article class="theme-card">
+              <img src="assets/theme-nativas.jpg" alt="Nativas">
+              <div class="theme-meta">
+                <h4>Nativas</h4>
+					<p>Especies locales, bajo mantenimiento.</p>
+					<button class="btn choose" data-theme="nativas">Elegir</button>
+              </div>
+            </article>
+            <article class="theme-card">
+              <img src="assets/theme-med.jpg" alt="Mediterráneo">
+              <div class="theme-meta">
+                <h4>Mediterráneo</h4>
+                <p>Azules, violetas y plateados.</p>
+                <button class="btn choose" data-theme="mediterraneo">Elegir</button>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- Paso 2: Dimensiones (bloqueado hasta elegir tema) -->
+        <section class="step" data-step="2">
+          <header class="step-head"><span class="num">2</span><h3>Ingresá tus dimensiones</h3></header>
+          <form class="dims" id="dims-form">
+            <label>Largo (cm)
+              <input type="number" min="50" max="2000" step="1" name="largo" required>
+            </label>
+            <label>Ancho (cm)
+              <input type="number" min="20" max="2000" step="1" name="ancho" required>
+            </label>
+            <button class="btn" type="submit">Guardar</button>
+          </form>
+        </section>
+
+        <!-- Paso 3: Configuración (bloqueado hasta guardar dimensiones) -->
+        <section class="step" data-step="3">
+          <header class="step-head"><span class="num">3</span><h3>Elegí la configuración</h3></header>
+          <div class="options">
+            <fieldset>
+              <legend>Orientación</legend>
+              <label><input type="radio" name="aspect" value="sol" checked> Sol</label>
+              <label><input type="radio" name="aspect" value="sombra"> Sombra</label>
+            </fieldset>
+            <fieldset>
+              <legend>Posición</legend>
+              <label><input type="radio" name="posicion" value="un-lado" checked> Un lado</label>
+              <label><input type="radio" name="posicion" value="ambos-lados"> Ambos lados</label>
+            </fieldset>
+            <fieldset>
+              <legend>Situación</legend>
+              <label><input type="radio" name="situacion" value="nivel-suelo" checked> A nivel de suelo</label>
+              <label><input type="radio" name="situacion" value="elevado"> Cantero elevado</label>
+            </fieldset>
+          </div>
+        </section>
+
+        <!-- Paso 4: Restricciones (se muestra al tocar radios de config) -->
+        <section class="step" data-step="4">
+          <header class="step-head"><span class="num">4</span><h3>Requisitos extra</h3></header>
+          <div class="options">
+            <fieldset>
+              <legend>Seguridad</legend>
+              <label><input type="radio" name="seguridad" value="amigable" checked> Apto niños/mascotas</label>
+              <label><input type="radio" name="seguridad" value="sin-restriccion"> Sin restricciones</label>
+            </fieldset>
+          </div>
+        </section>
+
+        <!-- Paso 5: Agregar otro kit (se muestra al elegir requisitos) -->
+        <section class="step" data-step="5">
+          <header class="step-head"><span class="num">5</span><h3>¿Agregar otro kit?</h3></header>
+          <div class="addmore">
+            <button class="btn btn-ghost" id="add-kit">Agregar otro kit</button>
+            <a class="btn btn-primary" href="#checkout">Ir al checkout</a>
+          </div>
+        </section>
+      </div>
+
+      <aside class="summary" id="checkout">
+        <h3>Tu resumen</h3>
+        <ul id="summary-list"></ul>
+        <div class="totals">
+          <div><span>Subtotal</span><strong id="subtotal">$0</strong></div>
+          <div><span>Plan de plantación</span><strong>Gratis</strong></div>
+          <div><span>Envío</span><strong>Gratis</strong></div>
+          <div class="total"><span>Total</span><strong id="total">$0</strong></div>
+        </div>
+        <button class="btn btn-primary" id="btn-checkout">Proceder al pago</button>
+      </aside>
+    </section>
+
+    <section id="contacto" class="container contact">
+      <h2>¿No estás seguro? Te ayudamos</h2>
+      <form id="contact-form" class="contact-form">
+        <label>Nombre
+          <input name="nombre" required>
+        </label>
+        <label>Apellido
+          <input name="apellido" required>
+        </label>
+        <label>Correo
+          <input type="email" name="email" required>
+        </label>
+        <label>¿Qué necesitás?
+          <textarea name="mensaje" rows="4"></textarea>
+        </label>
+        <label class="inline"><input type="checkbox" required> Acepto la política de privacidad</label>
+        <button class="btn" type="submit">Enviar</button>
+      </form>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="social">
+        <a href="#">Instagram</a>
+        <a href="#">Pinterest</a>
+      </div>
+      <p>© <span id="year"></span> Midori</p>
+      <div class="legal">
+        <a href="#">Privacidad</a> • <a href="#">Términos</a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
