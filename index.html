@@ -195,15 +195,28 @@
 
         <!-- Paso 4: Restricciones (se muestra al tocar radios de config) -->
         <section class="step" data-step="4">
-          <header class="step-head"><span class="num">4</span><h3>Requisitos extra</h3></header>
-          <div class="options">
-            <fieldset>
-              <legend>Seguridad</legend>
-              <label><input type="radio" name="seguridad" value="amigable" checked> Apto niños/mascotas</label>
-              <label><input type="radio" name="seguridad" value="sin-restriccion"> Sin restricciones</label>
-            </fieldset>
-          </div>
-        </section>
+		  <header class="step-head"><span class="num">4</span><h3>Requisitos extra</h3></header>
+		
+		  <div class="options" id="reqs-options">
+		    <fieldset>
+		      <legend>Seguridad</legend>
+		      <label><input type="radio" name="seguridad" value="amigable" checked> Apto niños/mascotas</label>
+		      <label><input type="radio" name="seguridad" value="sin-restriccion"> Sin restricciones</label>
+		    </fieldset>
+		
+		    <fieldset>
+		      <legend>Polinizadoras</legend>
+		      <label>
+		        <input type="checkbox" name="polinizadoras" id="polinizadoras">
+		        Preferir plantas que atraigan polinizadores (abejas, mariposas)
+		      </label>
+		    </fieldset>
+		  </div>
+		
+		  <div class="actions">
+		    <button class="btn btn-primary" id="btn-save-reqs">Guardar</button>
+		  </div>
+		</section>
 
         <!-- Paso 5: Agregar otro kit (se muestra al elegir requisitos) -->
         <section class="step" data-step="5">
