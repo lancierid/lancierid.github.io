@@ -23,9 +23,9 @@ body {
 .container { width: min(1120px, 92%); margin: 0 auto; }
 
 .topbar { background: var(--ghost); border-bottom: 1px solid var(--line); font-size: 14px; }
-.topbar .container { display:flex; align-items:center; justify-content:space-between; padding:10px 0; }
-.promo { color: var(--brand); }
-.meta-links a { color: var(--muted); text-decoration:none; margin-left:14px; }
+.topbar .container { display:flex; align-items:center}
+.promo { margin-right: auto; color: var(--brand); }
+.meta-links a { color: var(--muted); text-decoration:none; margin-left: auto; display: flex;gap: 14px; }
 
 .header { display:flex; align-items:center; justify-content:space-between; padding:16px 0; }
 .brand { display:flex; align-items:center; gap:12px; color: var(--brand); text-decoration:none; font-weight:800; }
