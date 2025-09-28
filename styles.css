@@ -26,7 +26,7 @@ body {
 .topbar .container {display: flex; align-items: center;}
 .promo {  margin-right: auto; /* se queda a la izquierda */
   color: var(--brand);}
-.meta-links {  margin-left: auto;   /* empuja todo el bloque a la derecha */
+.meta-links {  margin-right: auto;   /* empuja todo el bloque a la derecha */
   display: flex;  gap: 14px;           /* separación entre links */
 }
 .meta-links a {color: var(--muted); text-decoration: none;}
