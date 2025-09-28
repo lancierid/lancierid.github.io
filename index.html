@@ -159,26 +159,39 @@
         </section>
 
         <!-- Paso 3: Configuración (bloqueado hasta guardar dimensiones) -->
-        <section class="step" data-step="3">
-          <header class="step-head"><span class="num">3</span><h3>Elegí la configuración</h3></header>
-          <div class="options">
-            <fieldset>
-              <legend>Orientación</legend>
-              <label><input type="radio" name="aspect" value="sol" checked> Sol</label>
-              <label><input type="radio" name="aspect" value="sombra"> Sombra</label>
-            </fieldset>
-            <fieldset>
-              <legend>Posición</legend>
-              <label><input type="radio" name="posicion" value="un-lado" checked> Un lado</label>
-              <label><input type="radio" name="posicion" value="ambos-lados"> Ambos lados</label>
-            </fieldset>
-            <fieldset>
-              <legend>Situación</legend>
-              <label><input type="radio" name="situacion" value="nivel-suelo" checked> A nivel de suelo</label>
-              <label><input type="radio" name="situacion" value="elevado"> Cantero elevado</label>
-            </fieldset>
-          </div>
-        </section>
+		<section class="step" data-step="3">
+		  <header class="step-head"><span class="num">3</span><h3>Elegí la configuración</h3></header>
+		
+		  <!-- Toggle de layout -->
+		  <div class="layout-toggle">
+		    <label><input type="radio" name="layout3" value="vertical" checked> Vertical</label>
+		    <label><input type="radio" name="layout3" value="horizontal"> Horizontal</label>
+		  </div>
+		
+		  <!-- Opciones: contenedor con id para alternar layout -->
+		  <div class="options opt-vertical" id="config-options">
+		    <fieldset>
+		      <legend>Orientación</legend>
+		      <label><input type="radio" name="aspect" value="sol" checked> Sol</label>
+		      <label><input type="radio" name="aspect" value="sombra"> Sombra</label>
+		    </fieldset>
+		    <fieldset>
+		      <legend>Posición</legend>
+		      <label><input type="radio" name="posicion" value="un-lado" checked> Un lado</label>
+		      <label><input type="radio" name="posicion" value="ambos-lados"> Ambos lados</label>
+		    </fieldset>
+		    <fieldset>
+		      <legend>Situación</legend>
+		      <label><input type="radio" name="situacion" value="nivel-suelo" checked> A nivel de suelo</label>
+		      <label><input type="radio" name="situacion" value="elevado"> Cantero elevado</label>
+		    </fieldset>
+		  </div>
+		  <!-- Botón Guardar -->
+		  <div class="actions">
+		    <button class="btn btn-primary" id="btn-save-config">Guardar</button>
+		  </div>
+		</section>
+
 
         <!-- Paso 4: Restricciones (se muestra al tocar radios de config) -->
         <section class="step" data-step="4">
