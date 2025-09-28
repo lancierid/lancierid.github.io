@@ -73,6 +73,7 @@ function initThemes(){
         posicion: 'un-lado',
         situacion: 'nivel-suelo',
         seguridad: 'amigable',
+		polinizadoras: false,   // <--- nuevo
         price: t.price,
       };
       kits.push(kit);
@@ -109,7 +110,7 @@ function initConfigRadios(){
       current[r.name] = r.value;
       renderSummary();
       // Al tocar cualquier radio, habilitamos el paso 4.
-      openStep(4);
+      //openStep(4);
     });
   });
 
@@ -120,26 +121,43 @@ function initConfigRadios(){
       current[r.name] = r.value;
       renderSummary();
       // Al setear requisitos, habilitamos el paso 5.
-      openStep(5);
+      //openStep(5);
     });
   });
 }
 
+function initRequirementsSave(){
+  const btn = document.getElementById('btn-save-reqs');
+  if (!btn) return;
+  btn.addEventListener('click', () => {
+    if (!kits.length) { toast('Elegí un tema primero.'); return; }
+    // Podés validar seguridad/polinizadoras si te interesa exigir algo
+    openStep(5);
+    steps[5]?.scrollIntoView({ behavior: 'smooth' });
+  });
+}
+
+
 function renderSummary(){
   const list = document.getElementById('summary-list');
+  if (!list) return;
   list.innerHTML = '';
   let subtotal = 0;
+
   kits.forEach((k, i) => {
     const dims = (k.largo && k.ancho) ? ` — ${k.largo}×${k.ancho} cm` : '';
+    const tipo = k.tipoKit === 'macetas' ? 'Macetas' : 'Canteros';
+    const badge = k.polinizadoras ? ' <small style="opacity:.75">• Polinizadoras</small>' : '';
     const li = document.createElement('li');
-	const tipo = k.tipoKit === 'macetas' ? 'Macetas' : 'Canteros';
-	li.innerHTML = `<span>${i+1}. ${tipo} — ${k.themeName}${dims}</span><strong>${formatCurrency(k.price)}</strong>`;
+    li.innerHTML = `<span>${i+1}. ${tipo} — ${k.themeName}${dims}${badge}</span><strong>${formatCurrency(k.price)}</strong>`;
     list.appendChild(li);
     subtotal += k.price;
   });
-  document.getElementById('subtotal').textContent = formatCurrency(subtotal);
-  document.getElementById('total').textContent = formatCurrency(subtotal);
+
+  document.getElementById('subtotal')?.textContent = formatCurrency(subtotal);
+  document.getElementById('total')?.textContent    = formatCurrency(subtotal);
 }
+
 
 function initAddAnother(){
   const btn = document.getElementById('add-kit');
@@ -206,6 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initConfigLayoutToggle();
   initConfigSave();
   initConfigRadios();
+  initRequirementsSave();
   initAddAnother();
   initCheckout();
 });
