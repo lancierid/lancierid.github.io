@@ -46,7 +46,7 @@
         <br>
 		<br>
 		<p>En Midori te ayudamos a transformar tu casa en un espacio verde y vivo. Nuestros kits prediseñados incluyen plantas seleccionadas, macetas, sustratos y una guía simple de instalación, todo entregado en tu puerta. Solo elegís el estilo (huerta, selvático, nativas o mediterráneo) y nosotros nos encargamos del resto.</p>
-		<p>Diseños pensados para que disfrutes de un rincón natural con identidad propia, <strong>fácil de armar, con dieño y sustentable</strong>.</p>
+		<p>Diseños pensados para que disfrutes de un rincón natural con identidad propia, <strong>fácil de armar, con diseño y sustentable</strong>.</p>
         <div class="cta">
           <a class="btn btn-primary" href="#instant">Empezar</a>
         </div>
@@ -104,11 +104,12 @@
 			</article>
 		  </div>
 		</section>
-		<!-- Paso 1: Tema (visible por defecto) -->
+
+		<!-- Paso 1: Tema (cerrado al iniciar; se abre tras Paso 0) -->
         <section class="step" data-step="1">
           <header class="step-head"><span class="num">1</span><h3>Elegí tu tema</h3></header>
           <p>Elegí el estilo de plantación que más te guste (no incluye contenedor).</p>
-          <div class="theme-grid  type-grid">
+          <div class="theme-grid type-grid">
             <article class="theme-card">
               <img src="assets/theme-huerta.jpg" alt="Huerta">
               <div class="theme-meta">
@@ -121,16 +122,16 @@
               <img src="assets/theme-selvatico.jpg" alt="Selvático">
               <div class="theme-meta">
                 <h4>Selvático</h4>
-					<p>Verde denso, texturas y sensación tropical.</p>
-					<button class="btn choose" data-theme="selvatico">Elegir</button>
+				<p>Verde denso, texturas y sensación tropical.</p>
+				<button class="btn choose" data-theme="selvatico">Elegir</button>
               </div>
             </article>
             <article class="theme-card">
               <img src="assets/theme-nativas.jpg" alt="Nativas">
               <div class="theme-meta">
                 <h4>Nativas</h4>
-					<p>Especies locales, bajo mantenimiento.</p>
-					<button class="btn choose" data-theme="nativas">Elegir</button>
+				<p>Especies locales, bajo mantenimiento.</p>
+				<button class="btn choose" data-theme="nativas">Elegir</button>
               </div>
             </article>
             <article class="theme-card">
@@ -144,7 +145,7 @@
           </div>
         </section>
 
-        <!-- Paso 2: Dimensiones (bloqueado hasta elegir tema) -->
+        <!-- Paso 2: Dimensiones -->
         <section class="step" data-step="2">
           <header class="step-head"><span class="num">2</span><h3>Ingresá tus dimensiones</h3></header>
           <form class="dims" id="dims-form">
@@ -158,17 +159,15 @@
           </form>
         </section>
 
-        <!-- Paso 3: Configuración (bloqueado hasta guardar dimensiones) -->
+        <!-- Paso 3: Configuración -->
 		<section class="step" data-step="3">
 		  <header class="step-head"><span class="num">3</span><h3>Elegí la configuración</h3></header>
-		
-		  <!-- Toggle de layout -->
+
 		  <div class="layout-toggle">
 		    <label><input type="radio" name="layout3" value="vertical" checked> Vertical</label>
 		    <label><input type="radio" name="layout3" value="horizontal"> Horizontal</label>
 		  </div>
-		
-		  <!-- Opciones: contenedor con id para alternar layout -->
+
 		  <div class="options opt-vertical" id="config-options">
 		    <fieldset>
 		      <legend>Orientación</legend>
@@ -186,24 +185,23 @@
 		      <label><input type="radio" name="situacion" value="elevado"> Cantero elevado</label>
 		    </fieldset>
 		  </div>
-		  <!-- Botón Guardar -->
 		  <div class="actions">
 		    <button class="btn btn-primary" id="btn-save-config">Guardar</button>
 		  </div>
 		</section>
 
 
-        <!-- Paso 4: Restricciones (se muestra al tocar radios de config) -->
+        <!-- Paso 4: Requisitos extra -->
         <section class="step" data-step="4">
 		  <header class="step-head"><span class="num">4</span><h3>Requisitos extra</h3></header>
-		
+
 		  <div class="options" id="reqs-options">
 		    <fieldset>
 		      <legend>Seguridad</legend>
 		      <label><input type="radio" name="seguridad" value="amigable" checked> Apto niños/mascotas</label>
 		      <label><input type="radio" name="seguridad" value="sin-restriccion"> Sin restricciones</label>
 		    </fieldset>
-		
+
 		    <fieldset>
 		      <legend>Polinizadoras</legend>
 		      <label>
@@ -212,13 +210,13 @@
 		      </label>
 		    </fieldset>
 		  </div>
-		
+
 		  <div class="actions">
 		    <button class="btn btn-primary" id="btn-save-reqs">Guardar</button>
 		  </div>
 		</section>
 
-        <!-- Paso 5: Agregar otro kit (se muestra al elegir requisitos) -->
+        <!-- Paso 5: Agregar otro kit / Checkout -->
         <section class="step" data-step="5">
           <header class="step-head"><span class="num">5</span><h3>¿Agregar otro kit?</h3></header>
           <div class="addmore">

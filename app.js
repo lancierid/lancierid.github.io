@@ -5,6 +5,7 @@ const THEMES = {
   nativas:      { name: 'Nativas',       price: 5990 },
   mediterraneo: { name: 'Mediterráneo',  price: 6790 },
 };
+
 const steps = {
   0: document.querySelector('[data-step="0"]'),
   1: document.querySelector('[data-step="1"]'),
@@ -13,33 +14,29 @@ const steps = {
   4: document.querySelector('[data-step="4"]'),
   5: document.querySelector('[data-step="5"]'),
 };
+
 const kits = []; // cada kit seleccionado
 let tipoActual = null; // 'canteros' | 'macetas'
 
-// ✅ Paso 0: setear tipo y habilitar Paso 1
-function initTypeStep(){
-  document.querySelectorAll('.choose-type[data-type]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      tipoActual = btn.getAttribute('data-type'); // 'canteros' | 'macetas'
-      toast('Tipo seleccionado: ' + (tipoActual === 'canteros' ? 'Canteros' : 'Macetas'));
-      openStep(1);
-      steps[1]?.scrollIntoView({ behavior: 'smooth' });
-    });
-  });
-}
-
+// Utils
 function formatCurrency(num) {
   try {
     return new Intl.NumberFormat('es-UY', { style: 'currency', currency: 'UYU', maximumFractionDigits: 0 }).format(num);
   } catch { return `$${Math.round(num)}`; }
 }
-
+function toast(msg){
+  const el = document.getElementById('toast');
+  if (!el) return;
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2400);
+}
 function setYear(){
   const y = document.getElementById('year');
   if (y) y.textContent = new Date().getFullYear();
 }
 
-// ✅ ABRIR/CERRAR pasos (incluye 0 si existe)
+// Abrir/cerrar pasos (incluye 0)
 function openStep(n){
   for (const i of [0,1,2,3,4,5]) {
     if (!steps[i]) continue;
@@ -48,11 +45,23 @@ function openStep(n){
   }
 }
 
-// ✅ Paso 1: elegir theme → crea kit y habilita Paso 2
+// Paso 0: setear tipo y habilitar Paso 1
+function initTypeStep(){
+  document.querySelectorAll('.choose-type[data-type]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      tipoActual = btn.getAttribute('data-type'); // 'canteros' | 'macetas'
+      toast('Tipo seleccionado: ' + (tipoActual === 'canteros' ? 'Canteros' : 'Macetas'));
+      openStep(1);
+      steps[1]?.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+}
+
+// Paso 1: elegir theme → crea kit y abre Paso 2
 function initThemes(){
   document.querySelectorAll('.choose[data-theme]').forEach(btn => {
     btn.addEventListener('click', () => {
-      // El chequeo de tipoActual va *adentro* del click
       if (!tipoActual) {
         toast('Elegí primero el tipo de kit.');
         openStep(0);
@@ -64,17 +73,17 @@ function initThemes(){
       if (!t) return;
 
       const kit = {
-        tipoKit: tipoActual,   // <-- ahora se guarda
-        theme: key,
+        tipoKit:   tipoActual,
+        theme:     key,
         themeName: t.name,
-        largo: null,
-        ancho: null,
-        aspect: 'sol',
-        posicion: 'un-lado',
+        largo:     null,
+        ancho:     null,
+        aspect:    'sol',
+        posicion:  'un-lado',
         situacion: 'nivel-suelo',
         seguridad: 'amigable',
-		polinizadoras: false,   // <--- nuevo
-        price: t.price,
+        polinizadoras: false,
+        price:     t.price,
       };
       kits.push(kit);
       toast('Tema seleccionado: ' + t.name);
@@ -85,8 +94,10 @@ function initThemes(){
   });
 }
 
+// Paso 2: dimensiones → abre Paso 3
 function initDimsForm(){
   const form = document.getElementById('dims-form');
+  if (!form) return;
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     if (!kits.length) { toast('Elegí un tema primero.'); return; }
@@ -98,46 +109,69 @@ function initDimsForm(){
     toast('Dimensiones guardadas.');
     renderSummary();
     openStep(3);
-    steps[3].scrollIntoView({ behavior: 'smooth' });
+    steps[3]?.scrollIntoView({ behavior: 'smooth' });
   });
 }
 
+// Paso 3/4: eventos (sin abrir automáticamente 4/5)
 function initConfigRadios(){
+  // Paso 3: radios → solo actualizan estado
   document.querySelectorAll('[data-step="3"] input[type="radio"]').forEach(r => {
     r.addEventListener('change', () => {
       if (!kits.length) return;
       const current = kits[kits.length - 1];
       current[r.name] = r.value;
       renderSummary();
-      // Al tocar cualquier radio, habilitamos el paso 4.
-      //openStep(4);
     });
   });
 
-  document.querySelectorAll('[data-step="4"] input[type="radio"]').forEach(r => {
-    r.addEventListener('change', () => {
+  // Paso 4: radios y checkbox → actualizan estado
+  document.querySelectorAll('[data-step="4"] input').forEach(inp => {
+    inp.addEventListener('change', () => {
       if (!kits.length) return;
       const current = kits[kits.length - 1];
-      current[r.name] = r.value;
+      if (inp.type === 'checkbox' && inp.name === 'polinizadoras') {
+        current.polinizadoras = inp.checked;
+      } else if (inp.type === 'radio') {
+        current[inp.name] = inp.value; // seguridad
+      }
       renderSummary();
-      // Al setear requisitos, habilitamos el paso 5.
-      //openStep(5);
     });
   });
 }
 
+// Paso 3: Guardar → abre Paso 4
+function initConfigSave(){
+  const btn = document.getElementById('btn-save-config');
+  if (!btn) return;
+  btn.addEventListener('click', () => {
+    if (!kits.length) { toast('Elegí un tema primero.'); return; }
+    openStep(4);
+    steps[4]?.scrollIntoView({ behavior: 'smooth' });
+  });
+}
+
+// Paso 4: Guardar → abre Paso 5 y asegura estado
 function initRequirementsSave(){
   const btn = document.getElementById('btn-save-reqs');
   if (!btn) return;
   btn.addEventListener('click', () => {
     if (!kits.length) { toast('Elegí un tema primero.'); return; }
-    // Podés validar seguridad/polinizadoras si te interesa exigir algo
+    const current = kits[kits.length - 1];
+
+    // Asegurar últimos valores antes de avanzar
+    const pol = document.getElementById('polinizadoras');
+    if (pol) current.polinizadoras = !!pol.checked;
+    const seg = document.querySelector('[data-step="4"] input[name="seguridad"]:checked');
+    if (seg) current.seguridad = seg.value;
+
+    renderSummary();
     openStep(5);
     steps[5]?.scrollIntoView({ behavior: 'smooth' });
   });
 }
 
-
+// Resumen lateral
 function renderSummary(){
   const list = document.getElementById('summary-list');
   if (!list) return;
@@ -147,20 +181,23 @@ function renderSummary(){
   kits.forEach((k, i) => {
     const dims = (k.largo && k.ancho) ? ` — ${k.largo}×${k.ancho} cm` : '';
     const tipo = k.tipoKit === 'macetas' ? 'Macetas' : 'Canteros';
-    const badge = k.polinizadoras ? ' <small style="opacity:.75">• Polinizadoras</small>' : '';
+    const badge = (k.polinizadoras === true) ? ' <small style="opacity:.75">• Polinizadoras</small>' : '';
     const li = document.createElement('li');
-    li.innerHTML = `<span>${i+1}. ${tipo} — ${k.themeName}${dims}${badge}</span><strong>${formatCurrency(k.price)}</strong>`;
+    li.innerHTML = `<span>${i+1}. ${tipo} — ${k.themeName}${dims}${badge}</span><strong>${formatCurrency(k.price || 0)}</strong>`;
     list.appendChild(li);
-    subtotal += k.price;
+    subtotal += k.price || 0;
   });
 
-  document.getElementById('subtotal')?.textContent = formatCurrency(subtotal);
-  document.getElementById('total')?.textContent    = formatCurrency(subtotal);
+  const subtotalEl = document.getElementById('subtotal');
+  const totalEl = document.getElementById('total');
+  if (subtotalEl) subtotalEl.textContent = formatCurrency(subtotal);
+  if (totalEl) totalEl.textContent = formatCurrency(subtotal);
 }
 
-
+// Paso 5: duplicar
 function initAddAnother(){
   const btn = document.getElementById('add-kit');
+  if (!btn) return;
   btn.addEventListener('click', (e) => {
     e.preventDefault();
     if (!kits.length) { toast('Elegí un tema primero.'); return; }
@@ -169,10 +206,11 @@ function initAddAnother(){
     toast('Se agregó otro kit.');
     renderSummary();
     openStep(2);
-    steps[2].scrollIntoView({ behavior: 'smooth' });
+    steps[2]?.scrollIntoView({ behavior: 'smooth' });
   });
 }
 
+// Toggle layout (Paso 3)
 function initConfigLayoutToggle(){
   const opts = document.getElementById('config-options');
   if (!opts) return;
@@ -186,9 +224,10 @@ function initConfigLayoutToggle(){
   apply('vertical'); // estado inicial
 }
 
-
+// Checkout
 function initCheckout(){
   const btn = document.getElementById('btn-checkout');
+  if (!btn) return;
   btn.addEventListener('click', () => {
     if (!kits.length) { toast('Agregá al menos un kit.'); return; }
     console.log('Checkout Midori - kits:', kits);
@@ -196,35 +235,17 @@ function initCheckout(){
   });
 }
 
-function initConfigSave(){
-  const btn = document.getElementById('btn-save-config');
-  if (!btn) return;
-  btn.addEventListener('click', () => {
-    if (!kits.length) { toast('Elegí un tema primero.'); return; }
-    openStep(4);
-    steps[4]?.scrollIntoView({ behavior: 'smooth' });
-  });
-}
-
-
-function toast(msg){
-  const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.classList.add('show');
-  setTimeout(() => el.classList.remove('show'), 2400);
-}
-
-// ✅ Inicialización (si tenés Paso 0 arrancá en 0; si no, en 1)
+// Init
 document.addEventListener('DOMContentLoaded', () => {
   setYear();
-  openStep(0);  // <-- arranca solo con el 0 abierto
-  initTypeStep();  // <-- habilita el Paso 1 cuando eligen canteros/macetas
-  initThemes(); // en el click de theme abre Paso 2
-  initDimsForm(); // guarda dims y abre Paso 3
+  openStep(0);           // solo Paso 0 abierto al inicio
+  initTypeStep();        // abre Paso 1
+  initThemes();          // abre Paso 2
+  initDimsForm();        // abre Paso 3
   initConfigLayoutToggle();
-  initConfigSave();// si agregaste “Guardar” en Paso 3
-  initConfigRadios();
-  initRequirementsSave(); // si agregaste “Guardar” en Paso 4
+  initConfigSave();      // Guardar en Paso 3 → Paso 4
+  initConfigRadios();    // listeners de 3 y 4 (sin abrir auto)
+  initRequirementsSave();// Guardar en Paso 4 → Paso 5
   initAddAnother();
   initCheckout();
 });

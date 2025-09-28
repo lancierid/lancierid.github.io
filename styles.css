@@ -118,19 +118,14 @@ label { display:inline-flex; align-items:center; gap:8px; margin:6px 10px 6px 0;
   .dims { grid-template-columns: 1fr; }
   .options { grid-template-columns: 1fr; }
 }
-/* Paso 0: grid de 2 columnas */
-.type-grid {
-  grid-template-columns: repeat(2, 1fr);
-}
 
-.theme-card img {
-  height: 200px; /* un poco más alto para diferenciar */
-  object-fit: cover;
-}
+/* Paso 0: grid de 2 columnas */
+.type-grid { grid-template-columns: repeat(2, 1fr); }
+
+.theme-card img { height: 200px; object-fit: cover; }
+
 /* Paso 3: toggle de layout */
-.layout-toggle {
-  display: flex; gap: 12px; margin-bottom: 10px;
-}
+.layout-toggle { display: flex; gap: 12px; margin-bottom: 10px; }
 .layout-toggle label { display: inline-flex; align-items: center; gap: 6px; }
 
 /* Base */
@@ -138,15 +133,11 @@ label { display:inline-flex; align-items:center; gap:8px; margin:6px 10px 6px 0;
 #config-options legend { padding: 0 6px; color: var(--muted); }
 
 /* Vertical: labels apilados */
-#config-options.opt-vertical {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
-}
+#config-options.opt-vertical { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 #config-options.opt-vertical label { display: block; margin: 6px 0; }
 
 /* Horizontal: labels en línea */
-#config-options.opt-horizontal {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
-}
+#config-options.opt-horizontal { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 #config-options.opt-horizontal fieldset { display: flex; flex-direction: column; gap: 6px; }
 #config-options.opt-horizontal label { display: inline-flex; align-items: center; gap: 8px; margin-right: 12px; }
 
@@ -156,4 +147,3 @@ label { display:inline-flex; align-items:center; gap:8px; margin:6px 10px 6px 0;
   #config-options.opt-vertical,
   #config-options.opt-horizontal { grid-template-columns: 1fr; }
 }
-
