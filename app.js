@@ -155,6 +155,20 @@ function initAddAnother(){
   });
 }
 
+function initConfigLayoutToggle(){
+  const opts = document.getElementById('config-options');
+  if (!opts) return;
+  const apply = (mode) => {
+    opts.classList.toggle('opt-vertical',   mode === 'vertical');
+    opts.classList.toggle('opt-horizontal', mode === 'horizontal');
+  };
+  document.querySelectorAll('input[name="layout3"]').forEach(r => {
+    r.addEventListener('change', () => apply(r.value));
+  });
+  apply('vertical'); // estado inicial
+}
+
+
 function initCheckout(){
   const btn = document.getElementById('btn-checkout');
   btn.addEventListener('click', () => {
@@ -163,6 +177,17 @@ function initCheckout(){
     toast('¡Listo! Te contactaremos para coordinar el pago.');
   });
 }
+
+function initConfigSave(){
+  const btn = document.getElementById('btn-save-config');
+  if (!btn) return;
+  btn.addEventListener('click', () => {
+    if (!kits.length) { toast('Elegí un tema primero.'); return; }
+    openStep(4);
+    steps[4]?.scrollIntoView({ behavior: 'smooth' });
+  });
+}
+
 
 function toast(msg){
   const el = document.getElementById('toast');
@@ -178,6 +203,8 @@ document.addEventListener('DOMContentLoaded', () => {
   if (steps[0]) initTypeStep();  // <-- importante
   initThemes();
   initDimsForm();
+  initConfigLayoutToggle();
+  initConfigSave();
   initConfigRadios();
   initAddAnother();
   initCheckout();
