@@ -217,14 +217,14 @@ function toast(msg){
 // ✅ Inicialización (si tenés Paso 0 arrancá en 0; si no, en 1)
 document.addEventListener('DOMContentLoaded', () => {
   setYear();
-  openStep( steps[0] ? 0 : 1 );
-  if (steps[0]) initTypeStep();  // <-- importante
-  initThemes();
-  initDimsForm();
+  openStep(0);  // <-- arranca solo con el 0 abierto
+  initTypeStep();  // <-- habilita el Paso 1 cuando eligen canteros/macetas
+  initThemes(); // en el click de theme abre Paso 2
+  initDimsForm(); // guarda dims y abre Paso 3
   initConfigLayoutToggle();
-  initConfigSave();
+  initConfigSave();// si agregaste “Guardar” en Paso 3
   initConfigRadios();
-  initRequirementsSave();
+  initRequirementsSave(); // si agregaste “Guardar” en Paso 4
   initAddAnother();
   initCheckout();
 });
