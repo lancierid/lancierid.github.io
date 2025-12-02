@@ -6,6 +6,7 @@ const THEMES = {
   mediterraneo: { name: 'Mediterráneo',  price: 6790 },
 };
 
+// Ahora tenemos pasos 0 a 6
 const steps = {
   0: document.querySelector('[data-step="0"]'),
   1: document.querySelector('[data-step="1"]'),
@@ -13,18 +14,27 @@ const steps = {
   3: document.querySelector('[data-step="3"]'),
   4: document.querySelector('[data-step="4"]'),
   5: document.querySelector('[data-step="5"]'),
-  6: document.querySelector('[data-step="6"]'), // <-- nuevo
+  6: document.querySelector('[data-step="6"]'),
 };
 
 const kits = []; // cada kit seleccionado
 let tipoActual = null; // 'canteros' | 'macetas'
 
+// ----------------------
 // Utils
+// ----------------------
 function formatCurrency(num) {
   try {
-    return new Intl.NumberFormat('es-UY', { style: 'currency', currency: 'UYU', maximumFractionDigits: 0 }).format(num);
-  } catch { return `$${Math.round(num)}`; }
+    return new Intl.NumberFormat('es-UY', {
+      style: 'currency',
+      currency: 'UYU',
+      maximumFractionDigits: 0
+    }).format(num);
+  } catch {
+    return `$${Math.round(num)}`;
+  }
 }
+
 function toast(msg){
   const el = document.getElementById('toast');
   if (!el) return;
@@ -32,12 +42,13 @@ function toast(msg){
   el.classList.add('show');
   setTimeout(() => el.classList.remove('show'), 2400);
 }
+
 function setYear(){
   const y = document.getElementById('year');
   if (y) y.textContent = new Date().getFullYear();
 }
 
-// Abrir/cerrar pasos (incluye 0)
+// Abrir/cerrar pasos (0..6)
 function openStep(n){
   for (const i of [0,1,2,3,4,5,6]) {
     if (!steps[i]) continue;
@@ -46,7 +57,9 @@ function openStep(n){
   }
 }
 
-// Paso 0: setear tipo y habilitar Paso 1
+// ----------------------
+// Paso 0: tipo de kit
+// ----------------------
 function initTypeStep(){
   document.querySelectorAll('.choose-type[data-type]').forEach(btn => {
     btn.addEventListener('click', (e) => {
@@ -59,7 +72,9 @@ function initTypeStep(){
   });
 }
 
-// Paso 1: elegir theme → crea kit y abre Paso 2
+// ----------------------
+// Paso 1: tema
+// ----------------------
 function initThemes(){
   document.querySelectorAll('.choose[data-theme]').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -84,9 +99,9 @@ function initThemes(){
         situacion: 'nivel-suelo',
         seguridad: 'amigable',
         polinizadoras: false,
-        price:     t.price,
         instalacion: false,
         mantenimiento: false,
+        price:     t.price,
       };
       kits.push(kit);
       toast('Tema seleccionado: ' + t.name);
@@ -97,7 +112,9 @@ function initThemes(){
   });
 }
 
-// Paso 2: dimensiones → abre Paso 3
+// ----------------------
+// Paso 2: dimensiones
+// ----------------------
 function initDimsForm(){
   const form = document.getElementById('dims-form');
   if (!form) return;
@@ -108,7 +125,8 @@ function initDimsForm(){
     const largo = form.largo.value ? parseInt(form.largo.value, 10) : null;
     const ancho = form.ancho.value ? parseInt(form.ancho.value, 10) : null;
     if (!largo || !ancho) { toast('Ingresá largo y ancho.'); return; }
-    current.largo = largo; current.ancho = ancho;
+    current.largo = largo;
+    current.ancho = ancho;
     toast('Dimensiones guardadas.');
     renderSummary();
     openStep(3);
@@ -116,9 +134,12 @@ function initDimsForm(){
   });
 }
 
-// Paso 3/4: eventos (sin abrir automáticamente 4/5)
+// ----------------------
+// Paso 3 y 4: radios
+// (no abren pasos siguientes solos)
+// ----------------------
 function initConfigRadios(){
-  // Paso 3: radios → solo actualizan estado
+  // Paso 3: config (aspect, posicion, situacion)
   document.querySelectorAll('[data-step="3"] input[type="radio"]').forEach(r => {
     r.addEventListener('change', () => {
       if (!kits.length) return;
@@ -128,7 +149,7 @@ function initConfigRadios(){
     });
   });
 
-  // Paso 4: radios y checkbox → actualizan estado
+  // Paso 4: seguridad + polinizadoras (manejo de radios va acá)
   document.querySelectorAll('[data-step="4"] input').forEach(inp => {
     inp.addEventListener('change', () => {
       if (!kits.length) return;
@@ -143,7 +164,9 @@ function initConfigRadios(){
   });
 }
 
-// Paso 3: Guardar → abre Paso 4
+// ----------------------
+// Paso 3: botón Guardar (abre 4)
+// ----------------------
 function initConfigSave(){
   const btn = document.getElementById('btn-save-config');
   if (!btn) return;
@@ -154,15 +177,17 @@ function initConfigSave(){
   });
 }
 
-// Paso 4: Guardar → abre Paso 5 y asegura estado
+// ----------------------
+// Paso 4: botón Guardar (abre 5)
+// ----------------------
 function initRequirementsSave(){
   const btn = document.getElementById('btn-save-reqs');
   if (!btn) return;
   btn.addEventListener('click', () => {
     if (!kits.length) { toast('Elegí un tema primero.'); return; }
-    const current = kits[kits.length - 1];
 
-    // Asegurar últimos valores antes de avanzar
+    const current = kits[kits.length - 1];
+    // aseguramos últimos valores:
     const pol = document.getElementById('polinizadoras');
     if (pol) current.polinizadoras = !!pol.checked;
     const seg = document.querySelector('[data-step="4"] input[name="seguridad"]:checked');
@@ -174,7 +199,41 @@ function initRequirementsSave(){
   });
 }
 
-// Resumen lateral
+// ----------------------
+// Paso 5: Servicios opcionales
+// ----------------------
+function initServices(){
+  const chkInst = document.getElementById('srv-instalacion');
+  const chkMant = document.getElementById('srv-mantenimiento');
+  const btnSave = document.getElementById('btn-save-services');
+
+  if (!chkInst || !chkMant || !btnSave) return;
+
+  [chkInst, chkMant].forEach(inp => {
+    inp.addEventListener('change', () => {
+      if (!kits.length) return;
+      const current = kits[kits.length - 1];
+      if (inp.name === 'instalacion')   current.instalacion = inp.checked;
+      if (inp.name === 'mantenimiento') current.mantenimiento = inp.checked;
+      renderSummary();
+    });
+  });
+
+  btnSave.addEventListener('click', () => {
+    if (!kits.length) { toast('Elegí un tema primero.'); return; }
+    // aseguramos valores finales:
+    const current = kits[kits.length - 1];
+    current.instalacion   = !!chkInst.checked;
+    current.mantenimiento = !!chkMant.checked;
+    renderSummary();
+    openStep(6);
+    steps[6]?.scrollIntoView({ behavior: 'smooth' });
+  });
+}
+
+// ----------------------
+// Resumen
+// ----------------------
 function renderSummary(){
   const list = document.getElementById('summary-list');
   if (!list) return;
@@ -186,27 +245,37 @@ function renderSummary(){
     const tipo = k.tipoKit === 'macetas' ? 'Macetas' : 'Canteros';
 
     const extras = [];
-    if (k.polinizadoras) extras.push('Polinizadoras');
-    if (k.instalacion)  extras.push('Instalación');
-    if (k.mantenimiento) extras.push('Mantenimiento');
+    if (k.polinizadoras)  extras.push('Polinizadoras');
+    if (k.instalacion)    extras.push('Instalación');
+    if (k.mantenimiento)  extras.push('Mantenimiento');
+    const extrasBadge = extras.length
+      ? ` <small style="opacity:.75">• ${extras.join(' • ')}</small>`
+      : '';
 
-    const extrasBadge = extras.length ? ` <small style="opacity:.75">• ${extras.join(' • ')}</small>` : '';
+    const servicios =
+      (k.instalacion   ? 2500 : 0) +
+      (k.mantenimiento ? 2500 : 0);
 
-    // costos
-    const servicios = (k.instalacion ? 2500 : 0) + (k.mantenimiento ? 2500 : 0);
-    const itemTotal = (k.price || 0) + servicios;
+    const itemBase = k.price || 0;
+    const itemTotal = itemBase + servicios;
     subtotal += itemTotal;
 
     const li = document.createElement('li');
-    li.innerHTML = `<span>${i+1}. ${tipo} — ${k.themeName}${dims}${extrasBadge}</span><strong>${formatCurrency(itemTotal)}</strong>`;
+    li.innerHTML =
+      `<span>${i+1}. ${tipo} — ${k.themeName}${dims}${extrasBadge}</span>` +
+      `<strong>${formatCurrency(itemTotal)}</strong>`;
     list.appendChild(li);
   });
 
-  document.getElementById('subtotal')?.textContent = formatCurrency(subtotal);
-  document.getElementById('total')?.textContent    = formatCurrency(subtotal);
+  const subtotalEl = document.getElementById('subtotal');
+  const totalEl    = document.getElementById('total');
+  if (subtotalEl) subtotalEl.textContent = formatCurrency(subtotal);
+  if (totalEl)    totalEl.textContent    = formatCurrency(subtotal);
 }
 
-// Paso 5: duplicar
+// ----------------------
+// Paso 6: agregar otro kit
+// ----------------------
 function initAddAnother(){
   const btn = document.getElementById('add-kit');
   if (!btn) return;
@@ -214,7 +283,11 @@ function initAddAnother(){
     e.preventDefault();
     if (!kits.length) { toast('Elegí un tema primero.'); return; }
     const last = kits[kits.length - 1];
-    kits.push({ ...last, largo: null, ancho: null });
+    kits.push({
+      ...last,
+      largo: null,
+      ancho: null
+    });
     toast('Se agregó otro kit.');
     renderSummary();
     openStep(2);
@@ -222,7 +295,9 @@ function initAddAnother(){
   });
 }
 
-// Toggle layout (Paso 3)
+// ----------------------
+// Layout toggle paso 3
+// ----------------------
 function initConfigLayoutToggle(){
   const opts = document.getElementById('config-options');
   if (!opts) return;
@@ -236,33 +311,9 @@ function initConfigLayoutToggle(){
   apply('vertical'); // estado inicial
 }
 
-function initServices(){
-  const chkInst = document.getElementById('srv-instalacion');
-  const chkMant = document.getElementById('srv-mantenimiento');
-  const btnSave = document.getElementById('btn-save-services');
-
-  if (!chkInst || !chkMant || !btnSave) return;
-
-  // Cambios en tiempo real
-  [chkInst, chkMant].forEach(inp => {
-    inp.addEventListener('change', () => {
-      if (!kits.length) return;
-      const current = kits[kits.length - 1];
-      if (inp.name === 'instalacion') current.instalacion = inp.checked;
-      if (inp.name === 'mantenimiento') current.mantenimiento = inp.checked;
-      renderSummary();
-    });
-  });
-
-  // Guardar → abrir Paso 6
-  btnSave.addEventListener('click', () => {
-    if (!kits.length) { toast('Elegí un tema primero.'); return; }
-    openStep(6);
-    steps[6]?.scrollIntoView({ behavior: 'smooth' });
-  });
-}
-
+// ----------------------
 // Checkout
+// ----------------------
 function initCheckout(){
   const btn = document.getElementById('btn-checkout');
   if (!btn) return;
@@ -273,7 +324,9 @@ function initCheckout(){
   });
 }
 
-// Init
+// ----------------------
+// Init general
+// ----------------------
 document.addEventListener('DOMContentLoaded', () => {
   setYear();
   openStep(0);           // solo Paso 0 abierto al inicio
@@ -281,10 +334,11 @@ document.addEventListener('DOMContentLoaded', () => {
   initThemes();          // abre Paso 2
   initDimsForm();        // abre Paso 3
   initConfigLayoutToggle();
-  initConfigSave();      // Guardar en Paso 3 → Paso 4
-  initConfigRadios();    // listeners de 3 y 4 (sin abrir auto)
-  initRequirementsSave();// Guardar en Paso 4 → Paso 5
-  initServices();
+  initConfigSave();      // Guardar 3 → 4
+  initConfigRadios();    // radios 3 y 4
+  initRequirementsSave();// Guardar 4 → 5
+  initServices();        // Guardar 5 → 6
   initAddAnother();
   initCheckout();
 });
+
