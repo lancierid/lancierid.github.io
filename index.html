@@ -216,15 +216,37 @@
 		  </div>
 		</section>
 
-        <!-- Paso 5: Agregar otro kit / Checkout -->
-        <section class="step" data-step="5">
-          <header class="step-head"><span class="num">5</span><h3>¿Agregar otro kit?</h3></header>
-          <div class="addmore">
-            <button class="btn btn-ghost" id="add-kit">Agregar otro kit</button>
-            <a class="btn btn-primary" href="#checkout">Ir al checkout</a>
-          </div>
-        </section>
-      </div>
+        <!-- Paso 5: Servicios opcionales (nuevo) -->
+		<section class="step" data-step="5">
+		  <header class="step-head"><span class="num">5</span><h3>Servicios opcionales</h3></header>
+		
+		  <div class="options" id="services-options">
+		    <fieldset>
+		      <legend>Servicios</legend>
+		      <label>
+		        <input type="checkbox" name="instalacion" id="srv-instalacion">
+		        Instalación en domicilio (+ $2.500)
+		      </label>
+		      <label>
+		        <input type="checkbox" name="mantenimiento" id="srv-mantenimiento">
+		        Primera visita de mantenimiento (+ $2.500)
+		      </label>
+		    </fieldset>
+		  </div>
+		
+		  <div class="actions">
+		    <button class="btn btn-primary" id="btn-save-services">Guardar</button>
+		  </div>
+		</section>
+			
+		<!-- Paso 6: Agregar otro kit (renumerado) -->
+		<section class="step" data-step="6">
+		  <header class="step-head"><span class="num">6</span><h3>¿Agregar otro kit?</h3></header>
+		  <div class="addmore">
+		    <button class="btn btn-ghost" id="add-kit">Agregar otro kit</button>
+		    <a class="btn btn-primary" href="#checkout">Ir al checkout</a>
+		  </div>
+		</section>
 
       <aside class="summary" id="checkout">
         <h3>Tu resumen</h3>
