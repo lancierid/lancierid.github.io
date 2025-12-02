@@ -13,6 +13,7 @@ const steps = {
   3: document.querySelector('[data-step="3"]'),
   4: document.querySelector('[data-step="4"]'),
   5: document.querySelector('[data-step="5"]'),
+  6: document.querySelector('[data-step="6"]'), // <-- nuevo
 };
 
 const kits = []; // cada kit seleccionado
@@ -38,7 +39,7 @@ function setYear(){
 
 // Abrir/cerrar pasos (incluye 0)
 function openStep(n){
-  for (const i of [0,1,2,3,4,5]) {
+  for (const i of [0,1,2,3,4,5,6]) {
     if (!steps[i]) continue;
     if (i <= n) steps[i].classList.add('open');
     else steps[i].classList.remove('open');
@@ -84,6 +85,8 @@ function initThemes(){
         seguridad: 'amigable',
         polinizadoras: false,
         price:     t.price,
+        instalacion: false,
+        mantenimiento: false,
       };
       kits.push(kit);
       toast('Tema seleccionado: ' + t.name);
@@ -181,17 +184,26 @@ function renderSummary(){
   kits.forEach((k, i) => {
     const dims = (k.largo && k.ancho) ? ` — ${k.largo}×${k.ancho} cm` : '';
     const tipo = k.tipoKit === 'macetas' ? 'Macetas' : 'Canteros';
-    const badge = (k.polinizadoras === true) ? ' <small style="opacity:.75">• Polinizadoras</small>' : '';
+
+    const extras = [];
+    if (k.polinizadoras) extras.push('Polinizadoras');
+    if (k.instalacion)  extras.push('Instalación');
+    if (k.mantenimiento) extras.push('Mantenimiento');
+
+    const extrasBadge = extras.length ? ` <small style="opacity:.75">• ${extras.join(' • ')}</small>` : '';
+
+    // costos
+    const servicios = (k.instalacion ? 2500 : 0) + (k.mantenimiento ? 2500 : 0);
+    const itemTotal = (k.price || 0) + servicios;
+    subtotal += itemTotal;
+
     const li = document.createElement('li');
-    li.innerHTML = `<span>${i+1}. ${tipo} — ${k.themeName}${dims}${badge}</span><strong>${formatCurrency(k.price || 0)}</strong>`;
+    li.innerHTML = `<span>${i+1}. ${tipo} — ${k.themeName}${dims}${extrasBadge}</span><strong>${formatCurrency(itemTotal)}</strong>`;
     list.appendChild(li);
-    subtotal += k.price || 0;
   });
 
-  const subtotalEl = document.getElementById('subtotal');
-  const totalEl = document.getElementById('total');
-  if (subtotalEl) subtotalEl.textContent = formatCurrency(subtotal);
-  if (totalEl) totalEl.textContent = formatCurrency(subtotal);
+  document.getElementById('subtotal')?.textContent = formatCurrency(subtotal);
+  document.getElementById('total')?.textContent    = formatCurrency(subtotal);
 }
 
 // Paso 5: duplicar
@@ -224,6 +236,32 @@ function initConfigLayoutToggle(){
   apply('vertical'); // estado inicial
 }
 
+function initServices(){
+  const chkInst = document.getElementById('srv-instalacion');
+  const chkMant = document.getElementById('srv-mantenimiento');
+  const btnSave = document.getElementById('btn-save-services');
+
+  if (!chkInst || !chkMant || !btnSave) return;
+
+  // Cambios en tiempo real
+  [chkInst, chkMant].forEach(inp => {
+    inp.addEventListener('change', () => {
+      if (!kits.length) return;
+      const current = kits[kits.length - 1];
+      if (inp.name === 'instalacion') current.instalacion = inp.checked;
+      if (inp.name === 'mantenimiento') current.mantenimiento = inp.checked;
+      renderSummary();
+    });
+  });
+
+  // Guardar → abrir Paso 6
+  btnSave.addEventListener('click', () => {
+    if (!kits.length) { toast('Elegí un tema primero.'); return; }
+    openStep(6);
+    steps[6]?.scrollIntoView({ behavior: 'smooth' });
+  });
+}
+
 // Checkout
 function initCheckout(){
   const btn = document.getElementById('btn-checkout');
@@ -246,6 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initConfigSave();      // Guardar en Paso 3 → Paso 4
   initConfigRadios();    // listeners de 3 y 4 (sin abrir auto)
   initRequirementsSave();// Guardar en Paso 4 → Paso 5
+  initServices();
   initAddAnother();
   initCheckout();
 });
